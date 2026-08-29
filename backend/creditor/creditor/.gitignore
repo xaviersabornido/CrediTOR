@@ -35,7 +35,6 @@ build/
 ### CrediTOR runtime ###
 .env
 .env.local
-application.properties
 application-local.properties
 application-secrets.properties
 data/

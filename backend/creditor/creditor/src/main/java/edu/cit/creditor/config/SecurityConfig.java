@@ -34,7 +34,12 @@ public class SecurityConfig {
                 "http://127.0.0.1:*",
                 "http://192.168.*:*",
                 "http://10.*:*",
-                "http://[::1]:*"));
+                "http://[::1]:*",
+                "https://*.vercel.app",
+                "https://*.loca.lt",
+                "https://*.ngrok-free.app",
+                "https://*.onrender.com",
+                "https://*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "Content-Disposition"));

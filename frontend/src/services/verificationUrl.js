@@ -19,7 +19,11 @@ export const isLocalOnlyOrigin = (originOrUrl) => {
 
 /**
  * Base URL for QR codes and public verification links.
- * Prefers VITE_PUBLIC_URL (LAN IP from npm run dev), then current browser host if not localhost.
+ *
+ * Priority:
+ * 1. VITE_PUBLIC_URL env var (set by detect-lan.mjs in dev, or manually in production).
+ * 2. window.location.origin when running on a public domain (Vercel, Netlify, etc.).
+ * 3. Falls back to whatever origin is available (including localhost for local-only dev).
  */
 export const getPublicOrigin = () => {
   const fromEnv = import.meta.env.VITE_PUBLIC_URL?.replace(/\/$/, '');
@@ -28,10 +32,9 @@ export const getPublicOrigin = () => {
   }
 
   if (typeof window !== 'undefined') {
-    const { protocol, hostname, port } = window.location;
-    if (!isLocalHost(hostname)) {
-      const hostPort = port ? `${hostname}:${port}` : hostname;
-      return `${protocol}//${hostPort}`;
+    const origin = window.location.origin.replace(/\/$/, '');
+    if (!isLocalOnlyOrigin(origin)) {
+      return origin;
     }
   }
 
